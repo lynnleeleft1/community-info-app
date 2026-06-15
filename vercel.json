@@ -2,6 +2,7 @@
   "version": 2,
   "name": "community-info-app",
   "rewrites": [
+    { "source": "/rsshub/(.*)", "destination": "https://rsshub.app/$1" },
     { "source": "/api/(.*)", "destination": "/api/index" },
     { "source": "/((?!assets|icons|favicon|manifest|registerSW|sw\\.js).*)", "destination": "/index.html" }
   ]
