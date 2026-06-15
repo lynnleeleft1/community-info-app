@@ -1,0 +1,24 @@
+{
+  "name": "community-info-app",
+  "version": "2.0.0",
+  "description": "社群资讯聚合平台 - 全栈后端服务",
+  "main": "server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "start:express": "node server-express.js",
+    "postinstall": "echo 'Deploy ready'"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "better-sqlite3": "^9.4.3",
+    "web-push": "^3.6.6",
+    "node-cron": "^3.0.3",
+    "axios": "^1.6.5",
+    "uuid": "^9.0.0",
+    "dotenv": "^16.3.1"
+  }
+}

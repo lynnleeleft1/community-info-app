@@ -1,0 +1,230 @@
+{
+  "articles": [
+    {
+      "id": 1,
+      "source_id": "seed_ts_guide_2024",
+      "title": "【科普】跨性别者（TS/MTF/FTM）基础概念与术语指南",
+      "summary": "全面介绍跨性别群体的基础概念，包括MTF（男跨女）、FTM（女跨男）、非二元性别等术语的含义与区别，帮助新入圈者快速理解。",
+      "content": "跨性别（Transgender）是指性别认同或性别表达与出生时被分配性别不同的人。MTF（Male-to-Female）指男跨女者，即出生时被分配为男性但认同为女性。FTM（Female-to-Male）则相反...",
+      "url": "https://weibo.com/guide/ts-2024",
+      "source": "weibo_rss",
+      "category": "科普",
+      "author": "彩虹科普君",
+      "published_at": "2026-06-14T10:30:00Z",
+      "fetched_at": "2026-06-15 07:47:26",
+      "image_url": "",
+      "tags": "科普,TS,跨性别,MTF,FTM,入门",
+      "is_pushed": 0,
+      "created_at": "2026-06-15 07:47:26"
+    },
+    {
+      "id": 2,
+      "source_id": "seed_cd_event_sh",
+      "title": "【活动】上海6月CD/TS姐妹线下聚会报名开启",
+      "summary": "每月一度的沪上CD/TS姐妹聚会来啦！本次定在6月22日（周日）下午2点，地点徐家汇。欢迎新老朋友参加，交流化妆心得、穿搭经验。",
+      "content": "姐妹们，又到了每月聚会时间啦！本次地点选在徐家汇某咖啡厅，环境私密舒适。活动内容包括：自我介绍、化妆技巧分享、穿搭展示、自由交流...",
+      "url": "https://tieba.baidu.com/p/cd-event-sh-2024",
+      "source": "tieba_rss",
+      "category": "活动",
+      "author": "上海CD姐妹圈",
+      "published_at": "2026-06-13T08:00:00Z",
+      "fetched_at": "2026-06-15 07:47:26",
+      "image_url": "",
+      "tags": "活动,聚会,上海,CD,线下",
+      "is_pushed": 0,
+      "created_at": "2026-06-15 07:47:26"
+    },
+    {
+      "id": 3,
+      "source_id": "seed_rights_law",
+      "title": "【法律】第三性别认定最新政策解读：跨性别者合法权益保护",
+      "summary": "整理近期关于第三性别法律认定、跨性别者就业、医疗等权益保护的最新政策动向，附相关法律条文解读。",
+      "content": "近期多个城市在探索第三性别法律认定方面取得进展。关于跨性别者就业歧视、医疗权益等问题，已有相关判例...",
+      "url": "https://zhihu.com/article/law-rights-ts",
+      "source": "zhihu",
+      "category": "法律",
+      "author": "法律人小明",
+      "published_at": "2026-06-12T14:20:00Z",
+      "fetched_at": "2026-06-15 07:47:26",
+      "image_url": "",
+      "tags": "法律,权益,政策,第三性别",
+      "is_pushed": 0,
+      "created_at": "2026-06-15 07:47:26"
+    },
+    {
+      "id": 4,
+      "source_id": "seed_makeup_guide",
+      "title": "【教程】伪娘化妆入门：从零开始的日常妆容指南",
+      "summary": "专为伪娘/CD新手准备的详细化妆教程，涵盖底妆、遮瑕、眉毛、眼妆、唇妆等全流程，附产品推荐清单。",
+      "content": "化妆是伪娘变装过程中最重要的一环。一个精致的妆容可以让你在人群中自信绽放。本文将从最基础的底妆开始，一步步教你...",
+      "url": "https://bilibili.com/video/makeup-guide-cd",
+      "source": "bilibili",
+      "category": "伪娘",
+      "author": "美妆达人小樱",
+      "published_at": "2026-06-11T16:00:00Z",
+      "fetched_at": "2026-06-15 07:47:26",
+      "image_url": "",
+      "tags": "伪娘,化妆,教程,CD,入门",
+      "is_pushed": 0,
+      "created_at": "2026-06-15 07:47:26"
+    },
+    {
+      "id": 5,
+      "source_id": "seed_health_safe",
+      "title": "【健康】药娘安全用药指南：常见药物风险与健康监测",
+      "summary": "面向MTF群体的安全用药科普，介绍常见激素药物的效果与风险，强调在专业医生指导下用药的重要性。",
+      "content": "本文旨在提供科学、客观的信息，帮助MTF群体了解常见激素治疗药物的作用机制、潜在风险和健康监测要点。强烈建议所有用药者在专业医生指导下进行...",
+      "url": "https://weibo.com/weibo/health-mtf",
+      "source": "weibo_rss",
+      "category": "药娘",
+      "author": "医学科普站",
+      "published_at": "2026-06-10T09:00:00Z",
+      "fetched_at": "2026-06-15 07:47:26",
+      "image_url": "",
+      "tags": "药娘,健康,MTF,激素,安全用药",
+      "is_pushed": 0,
+      "created_at": "2026-06-15 07:47:26"
+    },
+    {
+      "id": 6,
+      "source_id": "seed_fashion_spring",
+      "title": "【穿搭】2026夏季CD/TS女装穿搭趋势与单品推荐",
+      "summary": "今年夏天流行什么？从碎花裙到阔腿裤，盘点最适合CD/TS姐妹的夏季穿搭方案，遮瑕显瘦技巧大公开。",
+      "content": "夏天到了，又到了姐妹们展示美丽的时候！今年夏季流行元素包括：法式碎花、高腰阔腿裤、透视纱裙...",
+      "url": "https://tieba.baidu.com/p/fashion-2026-summer",
+      "source": "tieba_rss",
+      "category": "CD",
+      "author": "时尚CD小鹿",
+      "published_at": "2026-06-09T11:30:00Z",
+      "fetched_at": "2026-06-15 07:47:26",
+      "image_url": "",
+      "tags": "穿搭,时尚,CD,夏季,女装",
+      "is_pushed": 0,
+      "created_at": "2026-06-15 07:47:26"
+    },
+    {
+      "id": 7,
+      "source_id": "seed_psy_support",
+      "title": "【心理】TS/CD群体心理健康：自我认同与家庭沟通",
+      "summary": "探讨跨性别与CD群体的常见心理困扰，提供自我认同建设方法和与家人沟通的实用建议。",
+      "content": "对于很多TS/CD朋友来说，自我认同和家庭关系是最大的心理压力来源。本文从心理学角度出发...",
+      "url": "https://zhihu.com/article/psy-support",
+      "source": "zhihu",
+      "category": "TS",
+      "author": "心理咨询师阿杰",
+      "published_at": "2026-06-08T13:00:00Z",
+      "fetched_at": "2026-06-15 07:47:26",
+      "image_url": "",
+      "tags": "心理,家庭,自我认同,TS,CD",
+      "is_pushed": 0,
+      "created_at": "2026-06-15 07:47:26"
+    },
+    {
+      "id": 8,
+      "source_id": "seed_voice_training",
+      "title": "【技能】MTF声音训练全攻略：如何拥有自然的女性嗓音",
+      "summary": "实用的MTF声音女性化训练方案，包含音调、共鸣、语调等多维度训练方法，附每日练习计划。",
+      "content": "声音是MTF群体passing的重要一环。通过系统的训练，大多数人都可以在6-12个月内获得自然的女性化声音...",
+      "url": "https://bilibili.com/video/voice-training-mtf",
+      "source": "bilibili",
+      "category": "TS",
+      "author": "语音训练师Cici",
+      "published_at": "2026-06-07T10:00:00Z",
+      "fetched_at": "2026-06-15 07:47:26",
+      "image_url": "",
+      "tags": "MTF,声音训练,passing,技能",
+      "is_pushed": 0,
+      "created_at": "2026-06-15 07:47:26"
+    },
+    {
+      "id": 9,
+      "source_id": "seed_community_bj",
+      "title": "【社区】北京第三性/TS社群发展史：从地下到阳光",
+      "summary": "回顾北京跨性别与第三性社群近20年的发展历程，从隐秘小圈子到如今逐渐被社会认知的过程。",
+      "content": "北京的第三性和跨性别社群经历了漫长而艰难的发展过程。从上世纪90年代末的隐秘小圈子...",
+      "url": "https://weibo.com/community-bj-history",
+      "source": "weibo_rss",
+      "category": "第三性",
+      "author": "北京彩虹社",
+      "published_at": "2026-06-06T15:00:00Z",
+      "fetched_at": "2026-06-15 07:47:26",
+      "image_url": "",
+      "tags": "第三性,北京,社群,历史",
+      "is_pushed": 0,
+      "created_at": "2026-06-15 07:47:26"
+    },
+    {
+      "id": 10,
+      "source_id": "seed_documentary",
+      "title": "【推荐】纪录片《第三性》：探索性别多元的中国故事",
+      "summary": "推荐一部关于中国第三性群体的独立纪录片，真实记录了五位不同背景的跨性别/第三性者的生活故事。",
+      "content": "这部纪录片跟踪拍摄了五位生活在不同城市的第三性和跨性别者，展现他/她们在家庭、工作、爱情中的真实处境...",
+      "url": "https://bilibili.com/video/documentary-third-gender",
+      "source": "bilibili",
+      "category": "第三性",
+      "author": "独立导演小王",
+      "published_at": "2026-06-05T08:30:00Z",
+      "fetched_at": "2026-06-15 07:47:26",
+      "image_url": "",
+      "tags": "第三性,纪录片,推荐,故事",
+      "is_pushed": 0,
+      "created_at": "2026-06-15 07:47:26"
+    }
+  ],
+  "categories": [
+    {
+      "id": "TS",
+      "name": "TS/跨性别",
+      "icon": "🌈",
+      "count": 0
+    },
+    {
+      "id": "CD",
+      "name": "CD",
+      "icon": "💄",
+      "count": 0
+    },
+    {
+      "id": "第三性",
+      "name": "第三性",
+      "icon": "⚧️",
+      "count": 0
+    },
+    {
+      "id": "伪娘",
+      "name": "伪娘",
+      "icon": "🎭",
+      "count": 0
+    },
+    {
+      "id": "药娘",
+      "name": "药娘",
+      "icon": "💊",
+      "count": 0
+    },
+    {
+      "id": "活动",
+      "name": "活动",
+      "icon": "📅",
+      "count": 0
+    },
+    {
+      "id": "科普",
+      "name": "科普",
+      "icon": "📚",
+      "count": 0
+    },
+    {
+      "id": "法律",
+      "name": "法律",
+      "icon": "⚖️",
+      "count": 0
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "limit": 100,
+    "total": 10,
+    "totalPages": 1
+  }
+}
