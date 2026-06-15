@@ -18,6 +18,10 @@ const DB_PATH = path.join(__dirname, 'data', 'db.json');
 const PUBLIC = path.join(__dirname, 'public');
 const SCRAPE_MIN = parseInt(process.env.SCRAPE_INTERVAL) || 10; // 10分钟主动更新
 
+// ═══ RSSHub 实例 — 通过环境变量 RSSHUB_BASE 可切换 ═══
+const RSSHUB_BASE = (process.env.RSSHUB_BASE || 'https://rsshub.app').replace(/\/+$/, '');
+function r(pathStr) { return RSSHUB_BASE + pathStr; }
+
 // ═══ JSON Database ═══
 function loadDB() {
   try { return JSON.parse(fs.readFileSync(DB_PATH, 'utf8')); }
@@ -155,6 +159,12 @@ const WEIBO_SEARCH_TERMS = [
   '跨性别','第三性','伪娘','药娘','transgender','MTF','FTM',
   'TS小姐姐','CD变装','女装大佬','LGBT','同志圈','性别认同',
   '李智贤','跨性别美女','TS网红',
+  '变性','人妖','变装','男娘','跨性别者','性别不安',
+  '激素治疗','HRT','性别重置手术','SRS','性别确认',
+  '女装子','男扮女装','女装癖','CD生活','TS生活','变性手术',
+  '雌激素','抗雄激素','声音训练','变声','性别表达',
+  '非二元性别','性别酷儿','queer','nonbinary',
+  'gender fluid','跨性别女性','跨性别男性','跨儿','蝴蝶豆',
 ];
 
 // ── 微博核心红人/KOL 账号 (RSSHub uid 格式) ──
@@ -167,6 +177,10 @@ const WEIBO_INFLUENCERS = [
   { uid:'7485528879', name:'跨儿心理', cat:'TS' },
   { uid:'1931093633', name:'淡蓝公益', cat:'科普' },
   { uid:'6138092018', name:'同志之声', cat:'TS' },
+  { uid:'7030182019', name:'跨性别之声', cat:'TS' },
+  { uid:'6578932104', name:'MTF姐妹圈', cat:'药娘' },
+  { uid:'李智贤', name:'李智贤', cat:'TS', searchOnly:true },
+  { uid:'蝴蝶豆', name:'蝴蝶豆', cat:'TS', searchOnly:true },
   // v4.0 新增红人
   { uid:'李智贤', name:'李智贤', cat:'TS', searchOnly:true },
   { uid:'7030182019', name:'跨性别之声', cat:'TS' },
@@ -178,18 +192,25 @@ const TIEBA_FORUMS = [
   '第三性','伪娘','药娘','CD','TS','transgender','女装子',
   'mtf','跨性别','性别认同','化妆','变装','同志','拉拉','gay',
   '李智贤','女装大佬','伪声','TS交友',
+  '变性','人妖','男娘','跨性别者','激素治疗',
+  '女装癖','CD生活','TS生活','变性人','跨儿',
 ];
 
 // ── 知乎话题 ──
 const ZHIHU_TOPICS = [
   '跨性别','第三性','性别认同','LGBT','性别研究',
   '激素治疗','性别重置','性少数群体','MTF经历分享',
+  '变性','人妖','变装','男娘','性别不安','非二元性别',
+  '性别确认手术','HRT激素治疗','跨性别男性','跨性别女性',
+  '跨性别博主','声音训练','变声',
 ];
 
 // ── B站搜索 ──
 const BILIBILI_KEYWORDS = [
   '跨性别','TS小姐姐','CD变装','伪娘','药娘','MTF','女装',
   'LGBT','性别认同','声音训练','化妆教程','李智贤','跨性别日常',
+  '变性','人妖','男娘','变性手术','激素治疗','跨性别博主',
+  'TS分享','CD日常','女装大佬','跨儿','男娘化妆',
 ];
 
 // ── B站UP主追踪 ──
@@ -203,6 +224,8 @@ const BILIBILI_UPERS = [
 const XIAOHONGSHU_KEYWORDS = [
   '跨性别','第三性','CD变装','伪娘','女装','MTF',
   'LGBT','化妆教程','穿搭','跨性别日常','TS穿搭',
+  '变性','男娘','人妖','激素治疗','声音训练',
+  '跨性别博主','TS分享','女装子','跨儿','TS日常',
 ];
 
 // ── 小红书博主追踪 ──
@@ -217,6 +240,8 @@ const DOUYIN_HOT = true;
 // ── Twitter/X ──
 const TWITTER_SEARCHES = [
   '跨性别','transgender China','MTF transgender','CD crossdresser',
+  '变性人','性别认同','hormone therapy','SRS','nonbinary',
+  'gender transition','跨性别女性','跨性别男性','男娘',
 ];
 
 // ═══ v4.0 新增平台 ═══
@@ -266,7 +291,7 @@ function buildFeeds() {
     if (inf.searchOnly) {
       // 搜索型红人 — 按关键词追踪
       feeds.push({
-        url: `https://rsshub.app/weibo/search/${encodeURIComponent(inf.name)}`,
+        url: `${RSSHUB_BASE}/weibo/search/${encodeURIComponent(inf.name)}`,
         cat: inf.cat,
         src: 'weibo_influencer',
         label: `微博红人·${inf.name}`,
@@ -274,7 +299,7 @@ function buildFeeds() {
       });
     } else {
       feeds.push({
-        url: `https://rsshub.app/weibo/user/${inf.uid}`,
+        url: `${RSSHUB_BASE}/weibo/user/${inf.uid}`,
         cat: inf.cat,
         src: 'weibo_influencer',
         label: `微博·${inf.name}`,
@@ -286,7 +311,7 @@ function buildFeeds() {
   // ▸ 微博关键词搜索
   WEIBO_SEARCH_TERMS.forEach(term => {
     feeds.push({
-      url: `https://rsshub.app/weibo/search/${encodeURIComponent(term)}`,
+      url: `${RSSHUB_BASE}/weibo/search/${encodeURIComponent(term)}`,
       cat: mapCategory(term),
       src: 'weibo_rss',
       label: `微博搜索·${term}`,
@@ -297,7 +322,7 @@ function buildFeeds() {
   // ▸ 贴吧
   TIEBA_FORUMS.forEach(forum => {
     feeds.push({
-      url: `https://rsshub.app/tieba/forum/${encodeURIComponent(forum)}`,
+      url: `${RSSHUB_BASE}/tieba/forum/${encodeURIComponent(forum)}`,
       cat: mapCategory(forum),
       src: 'tieba_rss',
       label: `贴吧·${forum}`,
@@ -308,7 +333,7 @@ function buildFeeds() {
   // ▸ 知乎
   ZHIHU_TOPICS.forEach(topic => {
     feeds.push({
-      url: `https://rsshub.app/zhihu/search/${encodeURIComponent(topic)}`,
+      url: `${RSSHUB_BASE}/zhihu/search/${encodeURIComponent(topic)}`,
       cat: mapCategory(topic),
       src: 'zhihu',
       label: `知乎·${topic}`,
@@ -319,7 +344,7 @@ function buildFeeds() {
   // ▸ B站搜索
   BILIBILI_KEYWORDS.forEach(kw => {
     feeds.push({
-      url: `https://rsshub.app/bilibili/vsearch/${encodeURIComponent(kw)}`,
+      url: `${RSSHUB_BASE}/bilibili/vsearch/${encodeURIComponent(kw)}`,
       cat: mapCategory(kw),
       src: 'bilibili',
       label: `B站·${kw}`,
@@ -330,7 +355,7 @@ function buildFeeds() {
   // ▸ B站UP主
   BILIBILI_UPERS.forEach(up => {
     feeds.push({
-      url: `https://rsshub.app/bilibili/user/video/${up.uid}`,
+      url: `${RSSHUB_BASE}/bilibili/user/video/${up.uid}`,
       cat: up.cat,
       src: 'bilibili',
       label: `B站UP·${up.name}`,
@@ -341,7 +366,7 @@ function buildFeeds() {
   // ▸ 小红书
   XIAOHONGSHU_KEYWORDS.forEach(kw => {
     feeds.push({
-      url: `https://rsshub.app/xiaohongshu/search/${encodeURIComponent(kw)}`,
+      url: `${RSSHUB_BASE}/xiaohongshu/search/${encodeURIComponent(kw)}`,
       cat: mapCategory(kw),
       src: 'xiaohongshu',
       label: `小红书·${kw}`,
@@ -352,7 +377,7 @@ function buildFeeds() {
   // ▸ 小红书博主
   XIAOHONGSHU_BLOGGERS.forEach(b => {
     feeds.push({
-      url: `https://rsshub.app/xiaohongshu/user/${b.id}/notes`,
+      url: `${RSSHUB_BASE}/xiaohongshu/user/${b.id}/notes`,
       cat: b.cat,
       src: 'xiaohongshu',
       label: `小红书·${b.name}`,
@@ -363,7 +388,7 @@ function buildFeeds() {
   // ▸ 抖音热点
   if (DOUYIN_HOT) {
     feeds.push({
-      url: 'https://rsshub.app/douyin/hot',
+      url: `${RSSHUB_BASE}/douyin/hot`,
       cat: 'general',
       src: 'douyin',
       label: '抖音·热榜',
@@ -374,7 +399,7 @@ function buildFeeds() {
   // ▸ Twitter/X
   TWITTER_SEARCHES.forEach(q => {
     feeds.push({
-      url: `https://rsshub.app/twitter/search/${encodeURIComponent(q)}`,
+      url: `${RSSHUB_BASE}/twitter/search/${encodeURIComponent(q)}`,
       cat: 'TS',
       src: 'twitter',
       label: `Twitter·${q}`,
@@ -387,7 +412,7 @@ function buildFeeds() {
   // ▸ 豆瓣小组
   DOUBAN_GROUPS.forEach(g => {
     feeds.push({
-      url: `https://rsshub.app/douban/search/group/${encodeURIComponent(g)}`,
+      url: `${RSSHUB_BASE}/douban/search/group/${encodeURIComponent(g)}`,
       cat: mapCategory(g),
       src: 'douban',
       label: `豆瓣小组·${g}`,
@@ -398,7 +423,7 @@ function buildFeeds() {
   // ▸ 即刻 (Jike)
   JIKE_TOPICS.forEach(t => {
     feeds.push({
-      url: `https://rsshub.app/jike/topic/text/${encodeURIComponent(t)}`,
+      url: `${RSSHUB_BASE}/jike/topic/text/${encodeURIComponent(t)}`,
       cat: mapCategory(t),
       src: 'jike',
       label: `即刻·${t}`,
@@ -409,7 +434,7 @@ function buildFeeds() {
   // ▸ V2EX
   V2EX_KEYWORDS.forEach(kw => {
     feeds.push({
-      url: `https://rsshub.app/v2ex/search/${encodeURIComponent(kw)}`,
+      url: `${RSSHUB_BASE}/v2ex/search/${encodeURIComponent(kw)}`,
       cat: mapCategory(kw),
       src: 'v2ex',
       label: `V2EX·${kw}`,
@@ -420,7 +445,7 @@ function buildFeeds() {
   // ▸ Reddit
   REDDIT_SUBREDDITS.forEach(sub => {
     feeds.push({
-      url: `https://rsshub.app/reddit/subreddit/${sub}`,
+      url: `${RSSHUB_BASE}/reddit/subreddit/${sub}`,
       cat: 'TS',
       src: 'reddit',
       label: `Reddit·r/${sub}`,
@@ -431,7 +456,7 @@ function buildFeeds() {
   // ▸ Telegram 频道
   TELEGRAM_CHANNELS.forEach(ch => {
     feeds.push({
-      url: `https://rsshub.app/telegram/channel/${ch}`,
+      url: `${RSSHUB_BASE}/telegram/channel/${ch}`,
       cat: 'TS',
       src: 'telegram',
       label: `TG·${ch}`,
@@ -442,7 +467,7 @@ function buildFeeds() {
   // ▸ 少数派
   SSPAI_KEYWORDS.forEach(kw => {
     feeds.push({
-      url: `https://rsshub.app/sspai/search/${encodeURIComponent(kw)}`,
+      url: `${RSSHUB_BASE}/sspai/search/${encodeURIComponent(kw)}`,
       cat: '科普',
       src: 'sspai',
       label: `少数派·${kw}`,
@@ -453,7 +478,7 @@ function buildFeeds() {
   // ▸ 网易新闻
   NETEASE_KEYWORDS.forEach(kw => {
     feeds.push({
-      url: `https://rsshub.app/netease/search/${encodeURIComponent(kw)}`,
+      url: `${RSSHUB_BASE}/netease/search/${encodeURIComponent(kw)}`,
       cat: mapCategory(kw),
       src: 'netease',
       label: `网易新闻·${kw}`,
@@ -463,7 +488,7 @@ function buildFeeds() {
 
   // ▸ 知乎热榜
   feeds.push({
-    url: 'https://rsshub.app/zhihu/hotlist',
+    url: `${RSSHUB_BASE}/zhihu/hotlist`,
     cat: 'general',
     src: 'zhihu',
     label: '知乎·热榜',
@@ -472,7 +497,7 @@ function buildFeeds() {
 
   // ▸ 微博热搜
   feeds.push({
-    url: 'https://rsshub.app/weibo/search/hot',
+    url: `${RSSHUB_BASE}/weibo/search/hot`,
     cat: 'general',
     src: 'weibo_rss',
     label: '微博·热搜',
@@ -567,9 +592,9 @@ async function scrapeAll() {
   // 按发布时间倒排
   db.articles.sort((a,b) => new Date(b.published_at) - new Date(a.published_at));
 
-  // 清理14天前的非核心文章，保留至少500条
-  if (db.articles.length > 3000) {
-    const cutoff = Date.now() - 14 * 86400000;
+  // 保留3年内的文章，红人/核心帖子永久保留
+  if (db.articles.length > 5000) {
+    const cutoff = Date.now() - 1095 * 86400000; // 3年
     db.articles = db.articles.filter(a =>
       new Date(a.published_at).getTime() > cutoff || a.source === 'weibo_influencer'
     );
@@ -651,18 +676,18 @@ async function manualSearch(keyword, limit = 20) {
 
   // 实时抓取 — 动态生成搜索源 (15+ 平台)
   const searchFeeds = [
-    { url: `https://rsshub.app/weibo/search/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'weibo_rss', label: '微博' },
-    { url: `https://rsshub.app/tieba/forum/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'tieba_rss', label: '贴吧' },
-    { url: `https://rsshub.app/zhihu/search/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'zhihu', label: '知乎' },
-    { url: `https://rsshub.app/bilibili/vsearch/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'bilibili', label: 'B站' },
-    { url: `https://rsshub.app/xiaohongshu/search/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'xiaohongshu', label: '小红书' },
+    { url: `${RSSHUB_BASE}/weibo/search/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'weibo_rss', label: '微博' },
+    { url: `${RSSHUB_BASE}/tieba/forum/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'tieba_rss', label: '贴吧' },
+    { url: `${RSSHUB_BASE}/zhihu/search/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'zhihu', label: '知乎' },
+    { url: `${RSSHUB_BASE}/bilibili/vsearch/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'bilibili', label: 'B站' },
+    { url: `${RSSHUB_BASE}/xiaohongshu/search/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'xiaohongshu', label: '小红书' },
     // v4.0 新增
-    { url: `https://rsshub.app/douban/search/group/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'douban', label: '豆瓣' },
-    { url: `https://rsshub.app/jike/topic/text/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'jike', label: '即刻' },
-    { url: `https://rsshub.app/v2ex/search/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'v2ex', label: 'V2EX' },
-    { url: `https://rsshub.app/reddit/subreddit/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'reddit', label: 'Reddit' },
-    { url: `https://rsshub.app/sspai/search/${encodeURIComponent(keyword)}`, cat: '科普', src: 'sspai', label: '少数派' },
-    { url: `https://rsshub.app/netease/search/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'netease', label: '网易新闻' },
+    { url: `${RSSHUB_BASE}/douban/search/group/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'douban', label: '豆瓣' },
+    { url: `${RSSHUB_BASE}/jike/topic/text/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'jike', label: '即刻' },
+    { url: `${RSSHUB_BASE}/v2ex/search/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'v2ex', label: 'V2EX' },
+    { url: `${RSSHUB_BASE}/reddit/subreddit/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'reddit', label: 'Reddit' },
+    { url: `${RSSHUB_BASE}/sspai/search/${encodeURIComponent(keyword)}`, cat: '科普', src: 'sspai', label: '少数派' },
+    { url: `${RSSHUB_BASE}/netease/search/${encodeURIComponent(keyword)}`, cat: 'TS', src: 'netease', label: '网易新闻' },
   ];
 
   const existingIds = new Set(db.articles.map(a => a.source_id));
@@ -754,7 +779,7 @@ async function refreshInfluencers() {
   for (const inf of WEIBO_INFLUENCERS) {
     if (inf.searchOnly) continue; // 搜索型在 buildFeeds 中处理
     try {
-      const rssUrl = `https://rsshub.app/weibo/user/${inf.uid}`;
+      const rssUrl = `${RSSHUB_BASE}/weibo/user/${inf.uid}`;
       const xml = await fetchURL(rssUrl);
       const items = parseXMLItems(xml);
       for (const item of items.slice(0, 10)) {
@@ -794,7 +819,7 @@ async function refreshInfluencers() {
   // B站UP主
   for (const up of BILIBILI_UPERS) {
     try {
-      const rssUrl = `https://rsshub.app/bilibili/user/video/${up.uid}`;
+      const rssUrl = `${RSSHUB_BASE}/bilibili/user/video/${up.uid}`;
       const xml = await fetchURL(rssUrl);
       const items = parseXMLItems(xml);
       for (const item of items.slice(0, 8)) {
@@ -834,7 +859,7 @@ async function refreshInfluencers() {
   // 小红书博主
   for (const b of XIAOHONGSHU_BLOGGERS) {
     try {
-      const rssUrl = `https://rsshub.app/xiaohongshu/user/${b.id}/notes`;
+      const rssUrl = `${RSSHUB_BASE}/xiaohongshu/user/${b.id}/notes`;
       const xml = await fetchURL(rssUrl);
       const items = parseXMLItems(xml);
       for (const item of items.slice(0, 8)) {
@@ -893,7 +918,7 @@ async function apiRouter(req, res) {
       success: true,
       data: {
         status: 'running',
-        version: '4.0.0',
+        version: '4.5.0',
         articleCount: db.articles.length,
         feedCount: ALL_FEEDS.length,
         platformCount: [...new Set(ALL_FEEDS.map(f => f.src))].length,
@@ -1064,10 +1089,26 @@ function seedDatabase() {
     { title: 'Reddit r/MtF 社区精华帖精选', desc: 'Reddit r/MtF 板块高质量讨论整理，国际视角下的跨性别女性经验分享。', url: 'https://reddit.com/r/MtF', src: 'reddit', cat: 'TS', author: 'Reddit社区' },
     { title: 'TG频道：跨性别资讯速递', desc: 'Telegram跨性别相关频道精选内容，实时资讯与社群讨论。', url: 'https://t.me', src: 'telegram', cat: 'TS', author: 'TG频道' },
     { title: '少数派：数字时代的性别平等', desc: '少数派平台上关于科技与性别平等的前沿讨论，数字工具如何赋能性别多元群体。', url: 'https://sspai.com', src: 'sspai', cat: '科普', author: '少数派作者' },
+    // v4.5 新增种子 — 扩展关键词覆盖
+    { title: '变性手术全流程科普：术前准备到术后恢复', desc: '变性手术从评估到术后恢复的完整流程介绍。\n\n内容包括：心理评估标准、多学科团队评估、术前准备阶段、手术类型选择（MTF/FTM各类术式）、术后恢复与护理、医保报销政策。', url: 'https://zhuanlan.zhihu.com', src: 'zhihu', cat: '科普', author: '医疗科普' },
+    { title: '男娘日常穿搭分享：如何做到日常女装不违和', desc: '男娘群体的日常穿搭心得分享，从通勤到约会全覆盖。\n\n穿搭要点：身材比例修饰技巧、场合适配穿搭指南、风格选择建议、单品推荐与搭配示范、假发与配饰选择。', url: 'https://www.xiaohongshu.com', src: 'xiaohongshu', cat: '伪娘', author: '男娘穿搭师' },
+    { title: '人妖与变性人的区别：常见概念科普', desc: '详解"人妖""变性人""跨性别者"等常见概念的定义与区别。\n\n概念辨析：人妖（传统称谓）vs变性人vs跨性别者的准确含义、各地文化语境差异、如何正确称呼与尊重。', url: 'https://zhuanlan.zhihu.com', src: 'zhihu', cat: '科普', author: '性别教育者' },
+    { title: 'CD变装圈的社群文化与安全指引', desc: 'CD（Cross-Dresser）社群的圈内文化介绍与安全注意事项。\n\n内容包括：CD圈常见术语与行话、线下聚会礼仪规范、安全出街小贴士、衣物收纳与隐私保护、社交安全指南。', url: 'https://tieba.baidu.com', src: 'tieba_rss', cat: 'CD', author: 'CD社群主' },
+    { title: '微博红人李智贤：TS博主的日常分享', desc: '微博知名TS博主李智贤的日常生活与社群互动分享。\n\n话题包括：日常化妆技巧、女性声音训练心得、性别认同历程分享、圈内互动与支持、时尚穿搭分享。', url: 'https://weibo.com', src: 'weibo_influencer', cat: 'TS', author: '李智贤' },
+    { title: '抗雄激素与雌激素：MTF常用药物详解', desc: 'MTF群体常用激素类药物的详细科普，包括作用机制、用法用量和副作用管理。\n\n药物介绍：螺内酯/醋酸环丙孕酮/雌二醇等常用药物、不同方案的优缺点对比、定期体检监测指标说明。', url: 'https://zhuanlan.zhihu.com', src: 'zhihu', cat: '药娘', author: '药学研究者' },
+    { title: '非二元性别者的自我认同之路', desc: '非二元性别者（nonbinary/genderqueer）的真实自我认同经历分享。\n\n内容包括：什么是非二元性别、常见性别认同谱系、社会融合中的挑战、家人朋友如何支持。', url: 'https://www.douban.com', src: 'douban', cat: 'TS', author: '非二元探索者' },
+    { title: '跨性别女性声音训练进阶教程', desc: '从入门到精通——MTF声音女性化训练的系统教学。\n\n进阶技巧：喉结控制提升、共鸣腔精准调整、语调女性化练习、日常对话实战、歌唱时的声音控制。', url: 'https://www.bilibili.com', src: 'bilibili', cat: 'TS', author: '声音教练' },
+    { title: '跨性别出国就医指南：泰国/美国/欧洲', desc: '盘点全球主要性别重置手术目的地，比较各国医疗资源与费用。\n\n目的地对比：泰国（性价比较高）/美国（技术先进）/欧洲部分国家（医保覆盖）、签证与就医注意事项。', url: 'https://zhuanlan.zhihu.com', src: 'zhihu', cat: 'TS', author: '跨国就医顾问' },
+    { title: '蝴蝶豆：跨性别社群新锐声音', desc: '跨性别社群新兴KOL"蝴蝶豆"的社群观点与日常分享。\n\n核心观点：跨性别去医疗化争议、性别表达自由、社群互助模式探索、新媒体时代的跨性别可见度。', url: 'https://weibo.com', src: 'weibo_rss', cat: 'TS', author: '蝴蝶豆' },
+    { title: '小红书TS日常：手术与恢复日记', desc: '一位MTF小姐姐在小红书分享的性别确认手术全记录。\n\n日记内容：术前心理准备期→手术当天→恢复期第1-3个月→术后生活变化→个人感悟与经验总结。', url: 'https://www.xiaohongshu.com', src: 'xiaohongshu', cat: 'TS', author: '小红书博主' },
+    { title: 'V2EX讨论：数字身份中的性别表达', desc: '技术社区V2EX上关于数字身份与性别表达的热门讨论。\n\n讨论话题：社交媒体平台如何支持多元性别标识、游戏角色的性别表达自由、AI与性别相关的偏见等。', url: 'https://www.v2ex.com', src: 'v2ex', cat: '科普', author: 'V2EX用户' },
+    { title: '即刻：跨性别者的职场生存实录', desc: '即刻用户分享的跨性别者在职场中的真实生存状态。\n\n话题涵盖：求职时是否需要出柜、职场着装自由、同事关系处理、HR对跨性别员工的接纳程度。', url: 'https://web.okjike.com', src: 'jike', cat: 'TS', author: '即刻用户' },
+    { title: '网易新闻：全国多地推动第三性别证件改革', desc: '多地试点第三性别身份证件标注，跨性别群体迎来政策利好。\n\n政策解读：试点城市名单、证件标注方式、对医疗教育就业等权益的影响、社会各界的反响。', url: 'https://news.163.com', src: 'netease', cat: '法律', author: '网易新闻' },
+    { title: '跨性别博主B站涨粉秘籍：内容创作心得', desc: '多位跨性别UP主分享B站内容创作经验。\n\n创作指南：如何选择合适的视频主题、粉丝互动策略、避免被限流的技巧、内容变现方式探索。', url: 'https://www.bilibili.com', src: 'bilibili', cat: 'TS', author: '创作达人' },
   ];
 
   seeds.forEach((s, i) => {
-    const shift = i * 28800000; // 每篇间隔8小时
+    const shift = i * 2700000000; // 每篇间隔约75小时，35篇覆盖3年
     db.seq++;
     db.articles.push({
       id: db.seq,
@@ -1093,7 +1134,7 @@ function seedDatabase() {
   });
   db.articles.sort((a,b) => new Date(b.published_at) - new Date(a.published_at));
   saveDB(db);
-  console.log(`[Seed v4.0] 🌱 ${seeds.length} 篇种子文章已创建 (${[...new Set(seeds.map(s=>s.src))].length} 个平台)`);
+  console.log(`[Seed v4.5] 🌱 ${seeds.length} 篇种子文章已创建 (${[...new Set(seeds.map(s=>s.src))].length} 个平台)`);
 }
 
 // ═══ Main Server ═══
@@ -1105,8 +1146,8 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`\n╔══════════════════════════════════════════╗`);
-  console.log(`║  社群资讯聚合平台 v4.0                    ║`);
-  console.log(`║  🚀 全平台智能抓取引擎                     ║`);
+  console.log(`║  社群资讯聚合平台 v4.5                    ║`);
+  console.log(`║  🔍 关键词全面扩充 + RSSHub可切换          ║`);
   console.log(`║  📡 信息源: ${ALL_FEEDS.length} 个 | 🌐 平台: ${[...new Set(ALL_FEEDS.map(f=>f.src))].length} 个          ║`);
   console.log(`║  📱 红人追踪: ${WEIBO_INFLUENCERS.length + BILIBILI_UPERS.length + XIAOHONGSHU_BLOGGERS.length} 个                         ║`);
   console.log(`║  📖 内联阅读: ${[...new Set(ALL_FEEDS.map(f=>f.src))].join('/')}  ║`);
